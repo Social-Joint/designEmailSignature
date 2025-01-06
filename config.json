@@ -1,10 +1,13 @@
-{"linedInIcon":"https://raw.githubusercontent.com/Social-Joint/designEmailSignature/main/linedInIcon.png?token=AVXOOJGY52QSGWRTKLOUTVLHPRG2A",
-  "locationIcon":"https://raw.githubusercontent.com/Social-Joint/designEmailSignature/main/locationIcon.png?token=AVXOOJH4MJINXWSKWLUTA6LHPRG2A",
-  "instaIcon":"https://raw.githubusercontent.com/Social-Joint/designEmailSignature/main/instaIcon.png?token=AVXOOJHR7IKDKL2JD2Z5J7LHPRG2A",
-  "fbIcon":"https://raw.githubusercontent.com/Social-Joint/designEmailSignature/main/fbIcon.png?token=AVXOOJAI4VWOAAU653GA5SDHPRG2A",
-  "websiteIcon":"https://raw.githubusercontent.com/Social-Joint/designEmailSignature/main/websiteIcon.png?token=AVXOOJHT3QVHKLGFP77HWIDHPRG2A",
-  "mailIcon":"https://raw.githubusercontent.com/Social-Joint/designEmailSignature/main/mailIcon.png?token=AVXOOJEAET3XCSF2PKBXQTLHPRG2A",
-  "brandLogo":"https://raw.githubusercontent.com/Social-Joint/designEmailSignature/main/brandLogo.png?token=AVXOOJGIPVUZUP2IKYI7JWDHPRG2A",
-  "phoneIcon":"https://raw.githubusercontent.com/Social-Joint/designEmailSignature/main/phoneIcon.png?token=AVXOOJF76SCR3GH74JN4CVDHPRG2A",
-"background":"https://raw.githubusercontent.com/Social-Joint/designEmailSignature/main/background.png?token=AVXOOJCRCIELZABPGXZOKFTHPRG2C",
-} 
+
+{
+  "name": "config.json",
+  "path": "config.json",
+  "sha": "a4d60ed957000010a948e05252c0803c8b590a7f",
+  "size": 500,
+  "url": "https://api.github.com/repos/username/repo/contents/config.json?ref=main",
+  "html_url": "https://github.com/username/repo/blob/main/config.json",
+  "git_url": "https://api.github.com/repos/username/repo/git/blobs/a4d60ed957000010a948e05252c0803c8b590a7f",
+  "download_url": "https://raw.githubusercontent.com/username/repo/main/config.json",
+  "type": "file",
+  "content": "base64-encoded-content-here"  // This is the base64 encoded file content
+}
