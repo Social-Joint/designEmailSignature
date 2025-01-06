@@ -3,11 +3,5 @@
   "name": "config.json",
   "path": "config.json",
   "sha": "a4d60ed957000010a948e05252c0803c8b590a7f",
-  "size": 500,
-  "url": "https://api.github.com/repos/username/repo/contents/config.json?ref=main",
-  "html_url": "https://github.com/username/repo/blob/main/config.json",
-  "git_url": "https://api.github.com/repos/username/repo/git/blobs/a4d60ed957000010a948e05252c0803c8b590a7f",
-  "download_url": "https://raw.githubusercontent.com/username/repo/main/config.json",
-  "type": "file",
-  "content": "base64-encoded-content-here"  // This is the base64 encoded file content
+ 
 }
