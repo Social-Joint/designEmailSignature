@@ -13,7 +13,18 @@ jobs:
       # Checkout the repository to access files
       - name: Checkout repository
         uses: actions/checkout@v2
-  # Set dynamic image filename (could be passed as an input from your API/backend)
+
+
+      - name: Fetch configuration from GitHub API
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}  # Securely use the token stored in secrets
+        run: |
+          curl -H "Authorization: token $GITHUB_TOKEN" \
+            https://api.github.com/repos/Social-Joint/designEmailSignature/contents/config.json
+
+
+        
+       # Set dynamic image filename (could be passed as an input from your API/backend)
       - name: Set dynamic image filename
         run: echo "IMAGE_FILENAME=${{ github.event.inputs.filename }}" >> $GITHUB_ENV  # Use the dynamic filename passed from API or frontend
 
@@ -22,29 +33,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}  # Securely use the token stored in secrets
         run: |
-          # Assuming the image content is passed dynamically as well
-          IMAGE_CONTENT=$(base64 -w 0 path/to/uploaded/image.jpg)  # Dynamic file path (adjust as needed)
+          # Assuming the image content is passed dynamically as well 
+          IMAGE_CONTENT=$(base64 -w 0 "uploads/${{ env.IMAGE_FILENAME }}")  # Base64 encode the file content
 
           # Use GitHub API to upload the image
           curl -X PUT \
             -H "Authorization: token $GITHUB_TOKEN" \
             -d '{"message": "Upload dynamic image", "content": "'$IMAGE_CONTENT'", "path": "uploads/'$IMAGE_FILENAME'", "branch": "main"}' \
-            https://api.github.com/repos/your-username/your-repo-name/contents/uploads/$IMAGE_FILENAME
+            https://api.github.com/repos/your-username/Social-Joint/designEmailSignature/uploads/$IMAGE_FILENAME
 
-      # Delete image from the 'uploads' folder
-      - name: Delete image from the uploads folder
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}  # Securely use the token stored in secrets
-        run: |
-          # Fetch the sha of the file you want to delete from the 'uploads' folder
-          sha=$(curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/Social-Joint/designEmailSignature/contents/uploads/image.jpg | jq -r .sha)
-          
-          # Delete the image file using the sha
-          curl -X DELETE \
-            -H "Authorization: token $GITHUB_TOKEN" \
-            -d '{"message": "Delete image", "sha": "'$sha'"}' \
-            https://api.github.com/repos/Social-Joint/designEmailSignature/contents/uploads/image.jpg
-
+ 
       # Deploy to GitHub Pages (assuming you want to deploy the build folder)
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
