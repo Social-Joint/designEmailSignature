@@ -19,8 +19,30 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}  # Securely use the token stored in secrets
         run: |
-          curl -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/Social-Joint/designEmailSignature/contents/config.json
-          
+          curl -H "Authorization: token $GITHUB_TOKEN" \
+            https://api.github.com/repos/Social-Joint/designEmailSignature/contents/config.json
+
+      # Upload new or updated file to GitHub (e.g., update or add config.json)
+      - name: Upload or update config.json to GitHub repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}  # Securely use the token stored in secrets
+        run: |
+          # Make sure the config.json is base64 encoded
+          curl -X PUT \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -d '{"message": "Update config.json", "content": "$(base64 -w 0 config.json)", "branch": "main"}' \
+            https://api.github.com/repos/Social-Joint/designEmailSignature/contents/config.json
+
+      # Optionally delete a file from the repository (if required)
+      - name: Delete old config.json from GitHub repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}  # Securely use the token stored in secrets
+        run: |
+          curl -X DELETE \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -d '{"message": "Delete config.json", "sha": "$(curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/Social-Joint/designEmailSignature/contents/config.json | jq -r .sha)"}' \
+            https://api.github.com/repos/Social-Joint/designEmailSignature/contents/config.json
+
       # Deploy to GitHub Pages (assuming you want to deploy the build folder)
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
