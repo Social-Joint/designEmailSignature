@@ -40,7 +40,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}  # Securely use the token stored in secrets
         run: |
           # Assuming the image content is passed dynamically as well 
-          IMAGE_CONTENT=$(base64 -w 0 "uploads/${{ env.IMAGE_FILENAME }}")  # Base64 encode the file content
+          IMAGE_CONTENT=$(base64 -w 0 "${{ env.IMAGE_FILENAME }}")  # Base64 encode the file content
 
 
           # Use GitHub API to upload the image
