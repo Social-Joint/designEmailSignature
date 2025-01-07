@@ -40,7 +40,7 @@ jobs:
           curl -X PUT \
             -H "Authorization: token $GITHUB_TOKEN" \
             -d '{"message": "Upload dynamic image", "content": "'$IMAGE_CONTENT'", "path": "uploads/'$IMAGE_FILENAME'", "branch": "main"}' \
-            https://api.github.com/repos/your-username/Social-Joint/designEmailSignature/uploads/$IMAGE_FILENAME
+            https://api.github.com/repos/Social-Joint/designEmailSignature/uploads/$IMAGE_FILENAME
 
  
       # Deploy to GitHub Pages (assuming you want to deploy the build folder)
