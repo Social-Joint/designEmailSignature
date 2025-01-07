@@ -41,7 +41,7 @@ jobs:
           mkdir -p uploads
 
       # Debugging Step: Verify that the image file exists
-      - name: Check if image file exists
+    - name: Check if image file exists
         run: |
           IMAGE_PATH="uploads/${{ env.IMAGE_FILENAME }}"
           echo "Checking for image file: $IMAGE_PATH"
