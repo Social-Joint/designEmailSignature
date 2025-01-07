@@ -28,6 +28,12 @@ jobs:
       - name: Set dynamic image filename
         run: echo "IMAGE_FILENAME=${{ github.event.inputs.filename }}" >> $GITHUB_ENV  # Use the dynamic filename passed from API or frontend
 
+    # Ensure the 'uploads' folder exists (if it doesn't already)
+      - name: Create 'uploads' folder if it doesn't exist
+        run: |
+          mkdir -p uploads
+          
+
       # Upload image to the 'uploads' folder
       - name: Upload image to the uploads folder
         env:
