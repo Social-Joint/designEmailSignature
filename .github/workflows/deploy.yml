@@ -11,6 +11,10 @@ on:
         description: 'Name of the image file'
         required: true
         type: string
+      image_base64:
+        description: 'Base64 encoded content of the image'
+        required: true
+        type: string
 
 jobs:
   deploy:
@@ -50,26 +54,20 @@ jobs:
           echo "Uploading to: uploads/${{ env.IMAGE_FILENAME }}"
 
 
-     # Upload image to the 'uploads' folder in the repository
+       # Use the GitHub API to upload the image (without re-encoding it)
       - name: Upload image to the uploads folder
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}  # Securely use the token stored in secrets
         run: |
-          IMAGE_PATH="uploads/${{ env.IMAGE_FILENAME }}"  # Define the image file path
-          
-      
-
-          # Base64 encode the image file content
-          IMAGE_CONTENT=$(base64 -w 0 "$IMAGE_PATH")
-
-          # Debugging Step: Check the encoded content (optional)
-          echo "Encoded content: $IMAGE_CONTENT"
+          IMAGE_FILENAME="${{ env.IMAGE_FILENAME }}"
+          IMAGE_CONTENT="${{ github.event.inputs.image_base64 }}"  # Get the base64 content from input
 
           # Use the GitHub API to upload the image to the 'uploads' folder
           curl -X PUT \
             -H "Authorization: token $GITHUB_TOKEN" \
-            -d '{"message": "Upload dynamic image", "content": "'$IMAGE_CONTENT'", "path": "uploads/'${{ env.IMAGE_FILENAME }}'", "branch": "main"}' \
+            -d '{"message": "Upload dynamic image", "content": "'$IMAGE_CONTENT'", "path": "uploads/'$IMAGE_FILENAME'", "branch": "main"}' \
             https://api.github.com/repos/Social-Joint/designEmailSignature/contents/uploads/${{ env.IMAGE_FILENAME }}
+
 
 
       # Deploy to GitHub Pages (assuming you want to deploy the build folder)
