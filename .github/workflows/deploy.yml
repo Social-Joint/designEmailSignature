@@ -75,6 +75,12 @@ jobs:
             -d '{"message": "Upload dynamic image", "content": "'$IMAGE_CONTENT'", "path": "uploads/'${{ env.IMAGE_FILENAME }}'", "branch": "main"}' \
             https://api.github.com/repos/Social-Joint/designEmailSignature/contents/uploads/${{ env.IMAGE_FILENAME }}
 
+- name: Debug URL and path
+  run: |
+    echo "Repository URL: https://api.github.com/repos/Social-Joint/designEmailSignature/contents/uploads/${{ env.IMAGE_FILENAME }}"
+    echo "Uploading to: uploads/${{ env.IMAGE_FILENAME }}"
+
+
       # Deploy to GitHub Pages (assuming you want to deploy the build folder)
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
