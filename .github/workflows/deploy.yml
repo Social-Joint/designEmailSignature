@@ -5,7 +5,6 @@ on:
     branches:
       - main  # Trigger the workflow when changes are pushed to the 'main' branch
 
-     
   workflow_dispatch:
     inputs:
       filename:
@@ -22,7 +21,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-
+      # Fetch configuration from GitHub API (example for accessing a config file)
       - name: Fetch configuration from GitHub API
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}  # Securely use the token stored in secrets
@@ -30,11 +29,11 @@ jobs:
           curl -H "Authorization: token $GITHUB_TOKEN" \
             https://api.github.com/repos/Social-Joint/designEmailSignature/contents/config.json
 
-   # Set dynamic image filename (from the input passed to the workflow)
+      # Set dynamic image filename (from the input passed to the workflow)
       - name: Set dynamic image filename
         run: |
           echo "IMAGE_FILENAME=${{ github.event.inputs.filename }}" >> $GITHUB_ENV
-          echo "The dynamic image filename is: $IMAGE_FILENAME" # Debugging the dynamic filename
+          echo "The dynamic image filename is: $IMAGE_FILENAME"  # Debugging the dynamic filename
 
       # Ensure the 'uploads' folder exists (if it doesn't already)
       - name: Create 'uploads' folder if it doesn't exist
@@ -74,10 +73,8 @@ jobs:
           curl -X PUT \
             -H "Authorization: token $GITHUB_TOKEN" \
             -d '{"message": "Upload dynamic image", "content": "'$IMAGE_CONTENT'", "path": "uploads/'${{ env.IMAGE_FILENAME }}'", "branch": "main"}' \
-            https://api.github.com/repos/Social-Joint/designEmailSignature/uploads/$IMAGE_FILENAME
- 
+            https://api.github.com/repos/Social-Joint/designEmailSignature/contents/uploads/${{ env.IMAGE_FILENAME }}
 
- 
       # Deploy to GitHub Pages (assuming you want to deploy the build folder)
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
