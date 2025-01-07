@@ -1,0 +1,29 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # This triggers the workflow when changes are pushed to the 'main' branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Fetch configuration or data from GitHub API (using TOKEN stored in secrets)
+      - name: Fetch configuration from GitHub API
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}  # Securely use the token stored in secrets
+        run: |
+          curl -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/Social-Joint/designEmailSignature/contents/config.json
+          
+      # Deploy to GitHub Pages (assuming you want to deploy the build folder)
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.TOKEN }}  # Use GITHUB_TOKEN to authenticate
+          publish_dir: ./build  # Directory to deploy (make sure you have the correct path)
