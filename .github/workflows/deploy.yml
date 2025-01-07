@@ -29,6 +29,7 @@ jobs:
           curl -H "Authorization: token $GITHUB_TOKEN" \
             https://api.github.com/repos/Social-Joint/designEmailSignature/contents/config.json
 
+ 
       # Set dynamic image filename (from the input passed to the workflow)
       - name: Set dynamic image filename
         run: |
@@ -40,8 +41,8 @@ jobs:
         run: |
           mkdir -p uploads
 
-      # Debugging Step: Verify that the image file exists
-    - name: Check if image file exists
+    # Debugging Step: Verify that the image file exists
+      - name: Check if image file exists
         run: |
           IMAGE_PATH="uploads/${{ env.IMAGE_FILENAME }}"
           echo "Checking for image file: $IMAGE_PATH"
@@ -49,8 +50,15 @@ jobs:
             echo "Error: File $IMAGE_PATH not found!"
             exit 1
           fi
+ 
+      # Debugging the URL and Path
+      - name: Debug URL and Path
+        run: |
+          echo "Repository URL: https://api.github.com/repos/Social-Joint/designEmailSignature/contents/uploads/${{ env.IMAGE_FILENAME }}"
+          echo "Uploading to: uploads/${{ env.IMAGE_FILENAME }}"
 
-      # Upload image to the 'uploads' folder in the repository
+
+     # Upload image to the 'uploads' folder in the repository
       - name: Upload image to the uploads folder
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}  # Securely use the token stored in secrets
@@ -74,11 +82,6 @@ jobs:
             -H "Authorization: token $GITHUB_TOKEN" \
             -d '{"message": "Upload dynamic image", "content": "'$IMAGE_CONTENT'", "path": "uploads/'${{ env.IMAGE_FILENAME }}'", "branch": "main"}' \
             https://api.github.com/repos/Social-Joint/designEmailSignature/contents/uploads/${{ env.IMAGE_FILENAME }}
-
-- name: Debug URL and path
-  run: |
-    echo "Repository URL: https://api.github.com/repos/Social-Joint/designEmailSignature/contents/uploads/${{ env.IMAGE_FILENAME }}"
-    echo "Uploading to: uploads/${{ env.IMAGE_FILENAME }}"
 
 
       # Deploy to GitHub Pages (assuming you want to deploy the build folder)
