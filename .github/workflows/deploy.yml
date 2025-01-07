@@ -22,32 +22,52 @@ jobs:
           curl -H "Authorization: token $GITHUB_TOKEN" \
             https://api.github.com/repos/Social-Joint/designEmailSignature/contents/config.json
 
-
-        
-       # Set dynamic image filename (could be passed as an input from your API/backend)
+   # Set dynamic image filename (from the input passed to the workflow)
       - name: Set dynamic image filename
-        run: echo "IMAGE_FILENAME=${{ github.event.inputs.filename }}" >> $GITHUB_ENV  # Use the dynamic filename passed from API or frontend
+        run: |
+          echo "IMAGE_FILENAME=${{ github.event.inputs.filename }}" >> $GITHUB_ENV
+          echo "The dynamic image filename is: $IMAGE_FILENAME" # Debugging the dynamic filename
 
-    # Ensure the 'uploads' folder exists (if it doesn't already)
+      # Ensure the 'uploads' folder exists (if it doesn't already)
       - name: Create 'uploads' folder if it doesn't exist
         run: |
           mkdir -p uploads
-          
 
-      # Upload image to the 'uploads' folder
+      # Debugging Step: Verify that the image file exists
+      - name: Check if image file exists
+        run: |
+          IMAGE_PATH="uploads/${{ env.IMAGE_FILENAME }}"
+          echo "Checking for image file: $IMAGE_PATH"
+          if [ ! -f "$IMAGE_PATH" ]; then
+            echo "Error: File $IMAGE_PATH not found!"
+            exit 1
+          fi
+
+      # Upload image to the 'uploads' folder in the repository
       - name: Upload image to the uploads folder
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}  # Securely use the token stored in secrets
         run: |
-          # Assuming the image content is passed dynamically as well 
-          IMAGE_CONTENT=$(base64 -w 0 "${{ env.IMAGE_FILENAME }}")  # Base64 encode the file content
+          IMAGE_PATH="uploads/${{ env.IMAGE_FILENAME }}"  # Define the image file path
+          
+          # Check if the image file exists
+          if [ ! -f "$IMAGE_PATH" ]; then
+            echo "Error: File $IMAGE_PATH not found!"
+            exit 1
+          fi
 
+          # Base64 encode the image file content
+          IMAGE_CONTENT=$(base64 -w 0 "$IMAGE_PATH")
 
-          # Use GitHub API to upload the image
+          # Debugging Step: Check the encoded content (optional)
+          echo "Encoded content: $IMAGE_CONTENT"
+
+          # Use the GitHub API to upload the image to the 'uploads' folder
           curl -X PUT \
             -H "Authorization: token $GITHUB_TOKEN" \
-            -d '{"message": "Upload dynamic image", "content": "'$IMAGE_CONTENT'", "path": "uploads/'$IMAGE_FILENAME'", "branch": "main"}' \
+            -d '{"message": "Upload dynamic image", "content": "'$IMAGE_CONTENT'", "path": "uploads/'${{ env.IMAGE_FILENAME }}'", "branch": "main"}' \
             https://api.github.com/repos/Social-Joint/designEmailSignature/uploads/$IMAGE_FILENAME
+ 
 
  
       # Deploy to GitHub Pages (assuming you want to deploy the build folder)
