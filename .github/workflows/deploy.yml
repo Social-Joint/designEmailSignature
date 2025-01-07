@@ -5,6 +5,14 @@ on:
     branches:
       - main  # Trigger the workflow when changes are pushed to the 'main' branch
 
+     
+  workflow_dispatch:
+    inputs:
+      filename:
+        description: 'Name of the image file'
+        required: true
+        type: string
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
