@@ -41,15 +41,7 @@ jobs:
         run: |
           mkdir -p uploads
 
-    # Debugging Step: Verify that the image file exists
-      - name: Check if image file exists
-        run: |
-          IMAGE_PATH="uploads/${{ env.IMAGE_FILENAME }}"
-          echo "Checking for image file: $IMAGE_PATH"
-          if [ ! -f "$IMAGE_PATH" ]; then
-            echo "Error: File $IMAGE_PATH not found!"
-            exit 1
-          fi
+ 
  
       # Debugging the URL and Path
       - name: Debug URL and Path
@@ -65,11 +57,7 @@ jobs:
         run: |
           IMAGE_PATH="uploads/${{ env.IMAGE_FILENAME }}"  # Define the image file path
           
-          # Check if the image file exists
-          if [ ! -f "$IMAGE_PATH" ]; then
-            echo "Error: File $IMAGE_PATH not found!"
-            exit 1
-          fi
+      
 
           # Base64 encode the image file content
           IMAGE_CONTENT=$(base64 -w 0 "$IMAGE_PATH")
