@@ -36,6 +36,7 @@ jobs:
           # Assuming the image content is passed dynamically as well 
           IMAGE_CONTENT=$(base64 -w 0 "uploads/${{ env.IMAGE_FILENAME }}")  # Base64 encode the file content
 
+
           # Use GitHub API to upload the image
           curl -X PUT \
             -H "Authorization: token $GITHUB_TOKEN" \
