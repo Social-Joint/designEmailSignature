@@ -3,45 +3,42 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # This triggers the workflow when changes are pushed to the 'main' branch
+      - main  # Trigger the workflow when changes are pushed to the 'main' branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout repository
+      # Checkout the repository to access files
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Fetch configuration or data from GitHub API (using TOKEN stored in secrets)
-      - name: Fetch configuration from GitHub API
+      # Upload image to the 'uploads' folder
+      - name: Upload image to the uploads folder
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}  # Securely use the token stored in secrets
         run: |
-          curl -H "Authorization: token $GITHUB_TOKEN" \
-            https://api.github.com/repos/Social-Joint/designEmailSignature/contents/config.json
-
-      # Upload new or updated file to GitHub (e.g., update or add config.json)
-      - name: Upload or update config.json to GitHub repository
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}  # Securely use the token stored in secrets
-        run: |
-          # Make sure the config.json is base64 encoded
+          # Base64 encode the image file you want to upload (e.g., 'image.jpg')
+          # Ensure the image file is in the repository root or adjust the path accordingly
           curl -X PUT \
             -H "Authorization: token $GITHUB_TOKEN" \
-            -d '{"message": "Update config.json", "content": "$(base64 -w 0 config.json)", "branch": "main"}' \
-            https://api.github.com/repos/Social-Joint/designEmailSignature/contents/config.json
+            -d '{"message": "Upload image", "content": "$(base64 -w 0 image.jpg)", "path": "uploads/image.jpg", "branch": "main"}' \
+            https://api.github.com/repos/Social-Joint/designEmailSignature/contents/uploads/image.jpg
 
-      # Optionally delete a file from the repository (if required)
-      - name: Delete old config.json from GitHub repository
+      # Delete image from the 'uploads' folder
+      - name: Delete image from the uploads folder
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}  # Securely use the token stored in secrets
         run: |
+          # Fetch the sha of the file you want to delete from the 'uploads' folder
+          sha=$(curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/Social-Joint/designEmailSignature/contents/uploads/image.jpg | jq -r .sha)
+          
+          # Delete the image file using the sha
           curl -X DELETE \
             -H "Authorization: token $GITHUB_TOKEN" \
-            -d '{"message": "Delete config.json", "sha": "$(curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/Social-Joint/designEmailSignature/contents/config.json | jq -r .sha)"}' \
-            https://api.github.com/repos/Social-Joint/designEmailSignature/contents/config.json
+            -d '{"message": "Delete image", "sha": "'$sha'"}' \
+            https://api.github.com/repos/Social-Joint/designEmailSignature/contents/uploads/image.jpg
 
       # Deploy to GitHub Pages (assuming you want to deploy the build folder)
       - name: Deploy to GitHub Pages
