@@ -59,8 +59,7 @@ jobs:
         run: |
           IMAGE_FILENAME="${{ env.IMAGE_FILENAME }}"
           IMAGE_CONTENT="${{ github.event.inputs.image_base64 }}"  # Get the base64 content from input
-          curl -X PUT \
-            -H "Authorization: Bearer $GITHUB_TOKEN" \
+          curl -X PUT -H "Authorization: Bearer $GITHUB_TOKEN" \
             -H "Content-Type: application/json" \
             -H "Accept: application/vnd.github.v3+json" \
              -d '{
