@@ -40,18 +40,18 @@ jobs:
           echo "IMAGE_FILENAME=${{ github.event.inputs.filename }}" >> $GITHUB_ENV
           echo "The dynamic image filename is: $IMAGE_FILENAME"  # Debugging the dynamic filename
 
-      # Ensure the 'uploads' folder exists (if it doesn't already)
-      - name: Create 'uploads' folder if it doesn't exist
-        run: |
-          mkdir -p uploads
+      # # Ensure the 'uploads' folder exists (if it doesn't already)
+      # - name: Create 'uploads' folder if it doesn't exist
+      #   run: |
+      #     mkdir -p uploads
 
  
  
       # Debugging the URL and Path
       - name: Debug URL and Path
         run: |
-          echo "Repository URL: https://api.github.com/repos/Social-Joint/designEmailSignature/contents/uploads/${{ env.IMAGE_FILENAME }}"
-          echo "Uploading to: uploads/${{ env.IMAGE_FILENAME }}"
+          echo "Repository URL: https://api.github.com/repos/Social-Joint/designEmailSignature/contents/${{ env.IMAGE_FILENAME }}"
+          echo "Uploading to: ${{ env.IMAGE_FILENAME }}"
 
 
        # Use the GitHub API to upload the image (without re-encoding it)
@@ -66,7 +66,7 @@ jobs:
           curl -X PUT \
             -H "Authorization: token $GITHUB_TOKEN" \
             -d '{"message": "Upload dynamic image", "content": "'$IMAGE_CONTENT'", "path": "'$IMAGE_FILENAME'", "branch": "main"}' \
-            https://api.github.com/repos/Social-Joint/designEmailSignature/contents/uploads/${{ env.IMAGE_FILENAME }}
+            https://api.github.com/repos/Social-Joint/designEmailSignature/contents/${{ env.IMAGE_FILENAME }}
 
 
 
