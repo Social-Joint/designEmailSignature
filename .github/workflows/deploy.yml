@@ -61,15 +61,14 @@ jobs:
         run: |
           IMAGE_FILENAME="${{ env.IMAGE_FILENAME }}"
           IMAGE_CONTENT="${{ github.event.inputs.image_base64 }}"  # Get the base64 content from input
+ 
+       curl -X PUT \
+      -H "Authorization: token $GITHUB_TOKEN" \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/vnd.github.v3+json" \
+      -d '{ "message": "Add image", "content": "'$IMAGE_CONTENT'", "path": "uploads/'$IMAGE_FILENAME'", "branch": "main" }' \
+       https://api.github.com/repos/Social-Joint/designEmailSignature/contents/uploads/${{ env.IMAGE_FILENAME }}
 
-          # Use the GitHub API to upload the image to the 'uploads' folder
-          curl -X PUT \
-            -H "Authorization: Bearer $GITHUB_TOKEN" \
-            -H "Content-Type: application/json" \
-            -d '{"message": "Upload dynamic image", "content": "'$IMAGE_CONTENT'", "path": "uploads/'$IMAGE_FILENAME'", "branch": "main"}' \
-           https://api.github.com/repos/Social-Joint/designEmailSignature/contents/uploads/${{ env.IMAGE_FILENAME }}
-
- # -H "Authorization: Bearer YOUR_PAT" \
 
 
       # Deploy to GitHub Pages (assuming you want to deploy the build folder)
