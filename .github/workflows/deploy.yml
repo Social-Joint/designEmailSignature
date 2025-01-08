@@ -65,7 +65,7 @@ jobs:
           # Use the GitHub API to upload the image to the 'uploads' folder
           curl -X PUT \
             -H "Authorization: token $GITHUB_TOKEN" \
-            -d '{"message": "Upload dynamic image", "content": "'$IMAGE_CONTENT'", "path": "uploads/'$IMAGE_FILENAME'", "branch": "main"}' \
+            -d '{"message": "Upload dynamic image", "content": "'$IMAGE_CONTENT'", "path": "'$IMAGE_FILENAME'", "branch": "main"}' \
             https://api.github.com/repos/Social-Joint/designEmailSignature/contents/uploads/${{ env.IMAGE_FILENAME }}
 
 
