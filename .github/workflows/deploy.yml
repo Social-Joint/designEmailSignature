@@ -64,13 +64,12 @@ jobs:
 
           # Use the GitHub API to upload the image to the 'uploads' folder
           curl -X PUT \
-            -H "Authorization: token $GITHUB_TOKEN" \
-           -d '{"message": "Upload dynamic image", "content": "data:image/jpeg;base64,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", "path": "uploads/locationIcon.png", "branch": "main"}' \
-            https://api.github.com/repos/Social-Joint/designEmailSignature/contents/uploads/locationIcon.png
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"message": "Upload dynamic image", "content": "'$IMAGE_CONTENT'", "path": "uploads/'$IMAGE_FILENAME'", "branch": "main"}' \
+           https://api.github.com/repos/Social-Joint/designEmailSignature/contents/uploads/${{ env.IMAGE_FILENAME }}
 
-            # -d '{"message": "Upload dynamic image", "content": "'$IMAGE_CONTENT'", "path": "uploads/'$IMAGE_FILENAME'", "branch": "main"}' \
-            # https://api.github.com/repos/Social-Joint/designEmailSignature/contents/uploads/${{ env.IMAGE_FILENAME }}
-
+ # -H "Authorization: Bearer YOUR_PAT" \
 
 
       # Deploy to GitHub Pages (assuming you want to deploy the build folder)
